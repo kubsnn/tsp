@@ -134,6 +134,7 @@
   <ItemGroup>
     <ClInclude Include="loader.hpp" />
     <ClInclude Include="libs.hpp" />
+    <ClInclude Include="tsp.hpp" />
     <ClInclude Include="utils.hpp" />
   </ItemGroup>
   <Import Project="$(VCTargetsPath)\Microsoft.Cpp.targets" />
