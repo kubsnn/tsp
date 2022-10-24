@@ -19,9 +19,9 @@ private:
 		double _Path_len = 0;
 
 		vector<bool> _Visited(_E_count, false);
-		//vector<size_t> _Path;
+		vector<size_t> _Path;
 
-		//_Path.emplace_back(0);
+		_Path.emplace_back(0);
 		_Visited[0] = true;
 
 		size_t _Current = 0;
@@ -34,7 +34,7 @@ private:
 					_Next = j;
 				}
 			}
-			//_Path.emplace_back(_Next);
+			_Path.emplace_back(_Next);
 			_Visited[_Next] = true;
 			_Path_len += _Min;
 			_Current = _Next;
@@ -42,10 +42,10 @@ private:
 		_Path_len += _Data[_Current][0];
 		
 		cout << "Greedy: " << _Path_len << endl;
-		//cout << "Path: ";
-		//for (const auto& e : _Path) {
-		//	cout << e << " ";
-		//}
+		cout << "Path: ";
+		for (const auto& e : _Path) {
+			cout << e << " ";
+		}
 		cout << endl;
 	}
 
