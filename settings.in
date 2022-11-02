@@ -1,4 +1,4 @@
-./x64/Debug/TSP100.txt
+./x64/Debug/TSPInput.txt
 100
 5000
 ./x64/Debug/path.out
