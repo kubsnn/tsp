@@ -41,12 +41,16 @@ private:
 		}
 		_Path_len += _Data[_Current][0];
 		
+
+		//Greedy
 		cout << "Greedy: " << _Path_len << endl;
 		cout << "Path: ";
 		for (const auto& e : _Path) {
 			cout << e << " ";
 		}
 		cout << endl;
+		
+		
 	}
 
 	const vector2d<double> _Data;
