@@ -18,7 +18,7 @@ int main()
 	cout << std::setprecision(2) << std::setfill(' ') << std::fixed;
 
     loader wgraph_loader;
-	auto graph = wgraph_loader.create_matrix("test.txt");
+	auto graph = wgraph_loader.create_matrix(path);
 	
 	simulated_annealing::Temp_init = 60;
 
