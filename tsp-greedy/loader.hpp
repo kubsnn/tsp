@@ -43,7 +43,7 @@ private:
 		points.reserve(count);
 		int x, y;
 		while (file >> x >> y) {
-			points.push_back({ x, y });
+			points.emplace_back(x, y);
 		}
 		
 		file.close();
