@@ -41,3 +41,25 @@ inline void print_matrix(const vector2d<double>& _Matrix) {
 		cout << "]" << endl;
 	}
 }
+
+constexpr float64 FLOAT64_MAX = std::numeric_limits<float64>::max();
+
+inline void clear_progress(const vector2d<float64>& _Data, const char* _Filename) {
+	std::ofstream _File(_Filename);
+	_File.close();
+}
+
+inline void write_progress(const vector2d<float64>& _Data, const vector<size_t>& _Path, const char* _Filename) {
+#ifdef DEBUG1
+	std::ofstream _File(_Filename, std::ios::app);
+	if (!_File.is_open()) {
+		throw std::runtime_error("Cannot open file: " + string(_Filename));
+	}
+
+	size_t _E_count = _Data.size();
+	for (size_t i = 0; i < _E_count; ++i) {
+		_File << _Path[i] << ' ' << _Path[(i + 1) % _E_count] << endl;// << ' ' << _Data[_Path[i]][_Path[(i + 1) % _E_count]] << endl;
+	}
+	_File.close();
+#endif
+}

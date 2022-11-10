@@ -17,6 +17,8 @@ public:
 		
 		auto _Path = _Alg.solve();
 		
+		cout << (typeid(_Alg).name() + 6) << endl;
+
 		auto _Cpy = _Path;
 		std::sort(_Cpy.begin(), _Cpy.end());
 		bool hasDuplicates = std::adjacent_find(_Cpy.begin(), _Cpy.end()) != _Cpy.end();
@@ -28,7 +30,7 @@ public:
 		}
 		cout << endl;
 		
-		cout << "Path length: " << _Alg._Calculate_length(_Path) << endl;
+		cout << "Path length: " << _Alg._Calculate_length(_Path) << endl << endl;
 	}
 
 private:

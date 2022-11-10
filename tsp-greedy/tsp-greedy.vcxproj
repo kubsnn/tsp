@@ -132,10 +132,11 @@
     <ClCompile Include="main.cpp" />
   </ItemGroup>
   <ItemGroup>
-    <ClInclude Include="greedy.h" />
+    <ClInclude Include="brute.hpp" />
+    <ClInclude Include="greedy.hpp" />
     <ClInclude Include="loader.hpp" />
     <ClInclude Include="libs.hpp" />
-    <ClInclude Include="simulated_annealing.h" />
+    <ClInclude Include="simulated_annealing.hpp" />
     <ClInclude Include="tsp.hpp" />
     <ClInclude Include="utils.hpp" />
   </ItemGroup>
