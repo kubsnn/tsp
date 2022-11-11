@@ -2,7 +2,7 @@
 
 #include "libs.hpp"
 
-using float64 = double;
+
 
 class algorithm {
 public:
@@ -41,8 +41,6 @@ inline void print_matrix(const vector2d<double>& _Matrix) {
 		cout << "]" << endl;
 	}
 }
-
-constexpr float64 FLOAT64_MAX = std::numeric_limits<float64>::max();
 
 inline void clear_progress(const vector2d<float64>& _Data, const char* _Filename) {
 	std::ofstream _File(_Filename);

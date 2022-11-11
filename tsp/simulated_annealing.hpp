@@ -59,9 +59,9 @@ private:
 			}
 			_Temperature *= 1 - _Cooling_rate;
 			
-			if (++_Ctr % 50000 == 0) {
+			if (++_Ctr % 10000 == 0) {
 				write_progress(_Data, _Path, "results.txt");
-				//cout << "Iteration: " << _Ctr << ",  " << "Temperature: " << _Temperature << ",  " << "Path length: " << _Path_len << endl;
+				cout << "Iteration: " << _Ctr << ",  " << "Temperature: " << _Temperature << ",  " << "Path length: " << _Path_len << endl;
 			}
 		}
 		return _Path;

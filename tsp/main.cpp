@@ -29,6 +29,8 @@ int main(int argc, char* argv[])
 
 	clear_progress(graph, "results.txt");
 
+	simulated_annealing::Temp_init = 400;
+
 	tsp solver(std::move(graph));
 	solver.solve<simulated_annealing>();
 	solver.solve<greedy>();

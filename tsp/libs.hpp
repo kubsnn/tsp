@@ -15,3 +15,7 @@ using std::endl;
 
 template <class _Ty>
 using vector2d = vector<vector<_Ty>>;
+
+using float64 = double;
+
+constexpr float64 FLOAT64_MAX = std::numeric_limits<float64>::max();
