@@ -133,6 +133,8 @@
     <ClCompile Include="main.cpp" />
   </ItemGroup>
   <ItemGroup>
+    <ClInclude Include="colors.h" />
+    <ClInclude Include="settings.hpp" />
     <ClInclude Include="brute.hpp" />
     <ClInclude Include="greedy.hpp" />
     <ClInclude Include="loader.hpp" />

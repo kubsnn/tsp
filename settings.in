@@ -1,7 +1,7 @@
-./x64/Debug/TSP100.txt
-100
+C:\Users\kubsn\source\repos\tsp\tsp\test.txt
+29
 5000
-./x64/Debug/path.out
+C:\Users\kubsn\source\repos\tsp\tsp\out.txt
 
 1. Name of File with input data
 2. Number of cities

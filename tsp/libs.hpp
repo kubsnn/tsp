@@ -4,6 +4,8 @@
 #include <fstream>
 #include <vector>
 #include <iomanip>
+#include <numeric>
+#include <algorithm>
 
 using std::vector;
 using std::ifstream;

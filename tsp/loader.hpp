@@ -41,8 +41,8 @@ private:
 		file >> count;
 		vector<point> points;
 		points.reserve(count);
-		int x, y;
-		while (file >> x >> y) {
+		int x, y, _;
+		while (file >> _ >> x >> y) {
 			points.emplace_back(x, y);
 		}
 		
