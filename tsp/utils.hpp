@@ -1,7 +1,7 @@
 #pragma once
 
 #include "libs.hpp"
-
+#include "colors.h"
 
 
 class algorithm {
@@ -47,7 +47,7 @@ inline void clear_progress(const vector2d<float64>& _Data, const char* _Filename
 	_File.close();
 }
 
-inline void write_progress(const vector2d<float64>& _Data, const vector<size_t>& _Path, const char* _Filename) {
+inline void write_progress(const vector2d<float64>& _Data, const vector2d<size_t>& _Path, const char* _Filename) {
 #ifdef DEBUG1
 	std::ofstream _File(_Filename, std::ios::app);
 	if (!_File.is_open()) {
@@ -55,9 +55,57 @@ inline void write_progress(const vector2d<float64>& _Data, const vector<size_t>&
 	}
 
 	size_t _E_count = _Data.size();
-	for (size_t i = 0; i < _E_count; ++i) {
-		_File << _Path[i] << ' ' << _Path[(i + 1) % _E_count] << endl;// << ' ' << _Data[_Path[i]][_Path[(i + 1) % _E_count]] << endl;
+	for (size_t i = 0; i < _Path.size(); ++i) {
+		for (size_t j = 0; j < _E_count; ++j) {
+			_File << _Path[i][j] << ' ' << _Path[i][(j + 1) % _E_count] << endl;
+		}
 	}
+
 	_File.close();
 #endif
+}
+
+inline float64 calculate_average_distance(const vector2d<float64>& _Data) {
+	float64 _Sum = 0.0;
+	for (size_t i = 0; i < _Data.size(); ++i) {
+		_Sum += std::accumulate(_Data[i].begin() + i + 1, _Data[i].end(), 0.0);
+	}
+	size_t _Elem_count = _Data.size() * (_Data.size() - 1) / 2;
+	return _Sum / _Elem_count;
+}
+
+inline void print_path(const vector<size_t>& _Path, float64 _Path_len) {
+	cout << color::white << "[\n  ";
+	for (size_t i = 0; i < _Path.size(); ++i) {
+		cout << color::darkgreen << _Path[i] << color::gray << ", ";
+		if ((i + 1) % 12 == 0) cout << "\n  ";
+	}
+	cout << color::darkgreen << _Path[0] << color::white << endl;
+	cout << color::white << "]\n";
+	
+	cout << color::white << "Path length: " << color::green << _Path_len << color::gray << "\n\n" << endl;
+}
+
+template <algorithm_type _Algo>
+inline void print_algorithm_name() {
+	auto _Prietify_name = [](string _Name) {
+		std::replace(_Name.begin(), _Name.end(), '_', ' ');
+		_Name.erase(std::find_if(_Name.rbegin(), _Name.rend(), [](char c) { return !std::isspace(c); }).base(), _Name.end());
+		_Name[0] = std::toupper(_Name[0]);
+		for (auto& e : _Name) {
+			if (e == ' ') *(&e + 1) = std::toupper(*(&e + 1));
+		}
+		return _Name;
+	};
+	cout << color::white << "Algorithm: " << color::green << _Prietify_name(typeid(_Algo).name() + 6) << color::gray << endl;
+}
+
+inline void check_for_duplicates(const vector<size_t>& _Path) {
+	for (size_t i = 0; i < _Path.size(); ++i) {
+		for (size_t j = i + 1; j < _Path.size(); ++j) {
+			if (_Path[i] == _Path[j]) {
+				std::cerr << color::red << "Duplicate found: " << _Path[i] << " at " << i << " and " << j << color::gray << endl;
+			}
+		}
+	}
 }

@@ -14,23 +14,15 @@ public:
 	template <algorithm_type _Algorithm>
 	inline void solve() const {
 		_Algorithm _Alg(_Data);
-		
 		auto _Path = _Alg.solve();
 		
-		cout << (typeid(_Alg).name() + 6) << endl;
+		print_algorithm_name<_Algorithm>();
 
-		auto _Cpy = _Path;
-		std::sort(_Cpy.begin(), _Cpy.end());
-		bool hasDuplicates = std::adjacent_find(_Cpy.begin(), _Cpy.end()) != _Cpy.end();
-		cout << "Duplicates? " << (hasDuplicates ? "YES" : "NO") << endl;
+		check_for_duplicates(_Path);
 
-		cout << "Path: ";
-		for (const auto& _Node : _Path) {
-			cout << _Node << " ";
-		}
-		cout << endl;
-		
-		cout << "Path length: " << _Alg._Calculate_length(_Path) << endl << endl;
+		print_path(_Path, _Alg._Calculate_length(_Path));
+
+		write_progress(_Data, { _Path }, "out.txt");
 	}
 
 private:

@@ -25,7 +25,7 @@ private:
 			_Path[i] = i;
 		}
 
-		float64 _Min = DBL_MAX;
+		float64 _Min = FLOAT64_MAX;
 		vector<size_t> _Best_path;
 
 		do {

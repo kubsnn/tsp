@@ -12,25 +12,69 @@ public:
 
 	inline static float64 Temp_init = 1e2;
 	inline static float64 Alpha = 3e-6;
-	inline static float64 Temp_min = 1.1;
+	inline static float64 Temp_min = 1.15;
+	inline static size_t Iterations = 15;
 
 	inline simulated_annealing(const vector2d<float64>& _Data)
 		: algorithm(_Data)
 	{ }
 
 	inline vector<size_t> solve() override {
-		return _Solve();
+		auto _Best_greedy = _Get_best_greedy_solution();
+		auto _Best_random = _Get_best_random_solution();
+
+		if (_Calculate_length(_Best_greedy.back()) < _Calculate_length(_Best_random.back())) {
+			write_progress(_Data, _Best_greedy, "results.txt");
+			return _Best_greedy.back();
+		} else {
+			write_progress(_Data, _Best_random, "results.txt");
+			return _Best_random.back();
+		}
 	}
 
 private:
-	inline vector<size_t> _Solve() {
+	inline vector2d<size_t> _Get_best_greedy_solution() {
 		greedy _Greedy(_Data);
-		//auto _Path = _Greedy.solve();
-		auto _Path = _Generate_random_path();
+		vector2d<size_t> _Best_path_progress;
+		float64 _Min_len = FLOAT64_MAX;
+		
+		size_t _Iters = std::min(Iterations, _Data.size());
 
+		for (size_t i = 0; i < _Iters; ++i) {
+			auto _Path = _Solve_path(_Greedy._Solve_greedy(i));
+			float64 _Path_len = _Calculate_length(_Path);
+			if (_Path_len < _Min_len) {
+				_Min_len = _Path_len;
+				_Best_path_progress = std::move(_Last_path_progress);
+			}
+			_Last_path_progress.clear();
+		}
+
+		return _Best_path_progress;
+	}
+
+	inline vector2d<size_t> _Get_best_random_solution() {
+		vector2d<size_t> _Best_path_progress;
+		float64 _Min_len = FLOAT64_MAX;
+
+		size_t _Iters = Iterations + std::max((int64_t)Iterations - (int64_t)_Data.size(), 0i64);
+		
+		for (size_t i = 0; i < _Iters; ++i) {
+			auto _Path = _Solve_path(_Generate_random_path());
+			float64 _Path_len = _Calculate_length(_Path);
+			if (_Path_len < _Min_len) {
+				_Min_len = _Path_len;
+				_Best_path_progress = std::move(_Last_path_progress);
+			}
+			_Last_path_progress.clear();
+		}
+
+		return _Best_path_progress;
+	}
+
+	inline vector<size_t> _Solve_path(vector<size_t> _Path) {
 		std::default_random_engine _Engine(time(NULL));
 		std::uniform_real_distribution<float64> _F64_dist(0., 100.);
-		//std::uniform_int_distribution<size_t> _U32_dist
 
 		size_t _E_count = _Data.size();
 		float64 _Path_len = _Calculate_length(_Path);
@@ -58,16 +102,20 @@ private:
 				}
 			}
 			_Temperature *= 1 - _Cooling_rate;
-			
-			if (++_Ctr % 10000 == 0) {
-				write_progress(_Data, _Path, "results.txt");
-				cout << "Iteration: " << _Ctr << ",  " << "Temperature: " << _Temperature << ",  " << "Path length: " << _Path_len << endl;
+#ifdef DEBUG1	
+			if (++_Ctr % 8000 == 0) {
+				_Last_path_progress.emplace_back(_Path);
 			}
+#endif
 		}
 		return _Path;
 	}
 
-	inline float64 _Rnd(std::uniform_real_distribution<>& _Dist, std::default_random_engine& _Engine) {
+	// Upgraded solution
+	
+	
+
+	inline float64 _Rnd(std::uniform_real_distribution<>& _Dist, std::default_random_engine& _Engine) const {
 		return _Dist(_Engine);
 	}
 
@@ -80,4 +128,6 @@ private:
 		std::shuffle(_Path.begin(), _Path.end(), std::default_random_engine(time(NULL)));
 		return _Path;
 	}
+
+	vector2d<size_t> _Last_path_progress;
 };

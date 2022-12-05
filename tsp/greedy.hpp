@@ -5,6 +5,8 @@
 
 class greedy : public algorithm {
 public:
+	friend class algorithm;
+	friend class simulated_annealing;
 	using algorithm::_Data;
 
 	greedy(const vector2d<float64>& _Data)
