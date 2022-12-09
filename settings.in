@@ -1,9 +1,4 @@
-C:\Users\kubsn\source\repos\tsp\tsp\test.txt
-29
+tsp\berlin52.txt
+127
 5000
-C:\Users\kubsn\source\repos\tsp\tsp\out.txt
-
-1. Name of File with input data
-2. Number of cities
-3. Max value of coordinates
-4. Name of File with results of the program
+results\res1.txt
