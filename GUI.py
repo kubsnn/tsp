@@ -3,10 +3,16 @@ import PySimpleGUI as sg
 import visualize
 import subprocess
 from time import sleep
-import threading
+
+window = None
 
 
-def saveToFile(settings, inputPath, outputPath, vAmount, vMax):
+def print2GUI(text):
+    print(text, end='')
+    window.refresh()
+
+
+def saveToFile(settings, inputPath, outputPath, vAmount, vMax, precision=2):
     # transform paths from absolute to relative paths
     inputPath = os.path.relpath(inputPath)
     outputPath = os.path.relpath(outputPath)
@@ -16,27 +22,34 @@ def saveToFile(settings, inputPath, outputPath, vAmount, vMax):
         settingsFile.write(str(vAmount) + "\n")
         settingsFile.write(str(vMax) + "\n")
         settingsFile.write(outputPath + "\n")
+        settingsFile.write(str(precision) + "\n")
 
 
-def RunSimulation(inputFile, outputFile):
+def RunSimulation(inputFile, outputFile, precision=2):
     runTSP = '.\\x64\\Release\\tsp.exe ' + '\"' + inputFile + \
-        '\"' + ' 2 ' + '> ' + '\"' + outputFile + '\"'
-    # print(runTSP)
-    print("Running simulation...")
-    #t1 = threading.Thread(target=subprocess.call, args=(runTSP,))
-    # t1.start()
+        '\" ' + str(precision) + ' > ' + '\"' + outputFile + '\"'
+    print2GUI("Running simulation...")
     subprocess.call(runTSP, shell=True)
-    print("Done")
-    sleep(1)
+    print2GUI("...Done")
+    showResults(outputFile)
 
 
-def createLayout(precisionOptions, inputPath, outputPath):
-    settings = [[sg.Text("Choose a input data file: "), sg.Input(expand_x=True,
-                                                                 key="-inputFile-", default_text=inputPath), sg.FileBrowse()],
+def showResults(outputFile):
+    with open(outputFile, "r") as file:
+        for line in file:
+            # if line is not empty
+            if line.strip():
+                print2GUI(line)
+    sleep(1.5)
+
+
+def createLayout(precisionOptions, inputPath, outputPath, precision):
+    settings = [[sg.Text("Choose an input data file: "), sg.Input(expand_x=True,
+                                                                  key="-inputFile-", default_text=inputPath), sg.FileBrowse()],
                 [sg.Text("Choose an output data file: "), sg.Input(expand_x=True,
                                                                    key="-outputFile-", default_text=outputPath), sg.FileBrowse()],
                 [sg.Text("Choose precision:"), sg.Combo(
-                    precisionOptions, default_value=2, key="-precision-", size=(10, None)), sg.Text(" (higher = slower but better result, lower = faster but worse result)")]]
+                    precisionOptions, default_value=precision, key="-precision-", size=(10, None)), sg.Text(" (higher = slower but better result, lower = faster but worse result)")]]
     settingsFrame = [[sg.Frame("Settings", settings, expand_x=True)]]
 
     controls = [[sg.Button("Save"), sg.Button("Cancel")], [sg.HSeparator(pad=(10, 10))], [sg.Button(
@@ -54,13 +67,14 @@ def createLayout(precisionOptions, inputPath, outputPath):
 
 
 def RunGUI(settingsPath, ThemeName, windowSize=(850, 330), precisionOptions=[1, 2, 3]):
-
+    global window
     # open file settings.in
     settingsFile = open(settingsPath, "r")
     inputPath = settingsFile.readline().strip()
     vAmount = int(settingsFile.readline())
     vMax = int(settingsFile.readline())
     outputPath = settingsFile.readline().strip()
+    precision = int(settingsFile.readline().strip())
     settingsFile.close()
 
     # inputPath from relative to absolute path
@@ -68,7 +82,7 @@ def RunGUI(settingsPath, ThemeName, windowSize=(850, 330), precisionOptions=[1, 
     outputPath = os.path.abspath(outputPath)
 
     sg.theme(ThemeName)
-    layout = createLayout(precisionOptions, inputPath, outputPath)
+    layout = createLayout(precisionOptions, inputPath, outputPath, precision)
 
     # Building Window
     window = sg.Window('TSPGUI', layout, size=windowSize, auto_size_text=True,
@@ -82,10 +96,12 @@ def RunGUI(settingsPath, ThemeName, windowSize=(850, 330), precisionOptions=[1, 
 
         # When button Save is pressed, save settings to file
         elif event == "Save":
+            print2GUI("Saving settings...")
             saveToFile("settings.in", values["-inputFile-"],
-                       values["-outputFile-"], vAmount, vMax)
+                       values["-outputFile-"], vAmount, vMax, values["-precision-"])
             inputPath = values["-inputFile-"]
             outputPath = values["-outputFile-"]
+            print2GUI("Saved")
 
         # When button Cancel is pressed, reset input and output paths to the ones from file
         elif event == "Cancel":
@@ -93,23 +109,29 @@ def RunGUI(settingsPath, ThemeName, windowSize=(850, 330), precisionOptions=[1, 
             window["-outputFile-"].update(outputPath)
 
         elif event == "Only Visualize":
+            print2GUI("Visualizing results...")
             visualize.visualizeResults(
                 values["-inputFile-"], values["-outputFile-"])
 
         elif event == "Save & Run":
-
+            print2GUI("Saving settings...")
             saveToFile("settings.in", values["-inputFile-"],
                        values["-outputFile-"], vAmount, vMax)
             inputPath = values["-inputFile-"]
             outputPath = values["-outputFile-"]
+            precision = values["-precision-"]
+            print2GUI("Saved")
+            RunSimulation(inputPath, outputPath, precision)
 
-            RunSimulation(inputPath, outputPath)
+            print2GUI("Visualizing results...")
             visualize.visualizeResults(inputPath, outputPath)
 
         elif event == "Run":
-            RunSimulation(values["-inputFile-"], values["-outputFile-"])
-            # visualize.visualizeResults(
-            #    values["-inputFile-"], values["-outputFile-"])
+            RunSimulation(values["-inputFile-"],
+                          values["-outputFile-"], values["-precision-"])
+            print2GUI("Visualizing results...")
+            visualize.visualizeResults(
+                values["-inputFile-"], values["-outputFile-"])
 
 
 if __name__ == '__main__':
@@ -117,4 +139,4 @@ if __name__ == '__main__':
     settingsPath = "settings.in"
     defaultTheme = "DarkAmber"
     # available Themes: https://media.geeksforgeeks.org/wp-content/uploads/20200511200254/f19.jpg
-    RunGUI(settingsPath, defaultTheme)
+    RunGUI(settingsPath, defaultTheme, windowSize=(850, 400))
