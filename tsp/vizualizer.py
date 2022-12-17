@@ -15,13 +15,16 @@ with open("results.txt", "r") as f:
 
 fig, ax = plt.subplots()
 
+
 def animate(i):
     ax.clear()
     ax.set_title("Frame {}".format(i))
     for j in range(len(ee[i])):
-        ax.plot([c[ee[i][j][0]][0], c[ee[i][j][1]][0]], [c[ee[i][j][0]][1], c[ee[i][j][1]][1]], 'r-')
-        ax.plot([c[ee[i][j][0]][0], c[ee[i][j][1]][0]], [c[ee[i][j][0]][1], c[ee[i][j][1]][1]], 'ko')
+        ax.plot([c[ee[i][j][0]][0], c[ee[i][j][1]][0]], [
+                c[ee[i][j][0]][1], c[ee[i][j][1]][1]], 'r-')
+        ax.plot([c[ee[i][j][0]][0], c[ee[i][j][1]][0]], [
+                c[ee[i][j][0]][1], c[ee[i][j][1]][1]], 'ko')
 
 
-ani = FuncAnimation(fig, animate, frames=len(ee), interval=45, repeat=False)
+ani = FuncAnimation(fig, animate, frames=len(ee), interval=15, repeat=False)
 plt.show()
