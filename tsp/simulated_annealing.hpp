@@ -39,7 +39,8 @@ private:
 		float64 _Min_len = FLOAT64_MAX;
 		
 		size_t _Iters = std::min(Iterations, _Data.size());
-
+		_Last_path_progress.reserve(_Iters);
+		
 		for (size_t i = 0; i < _Iters; ++i) {
 			auto _Path = _Solve_path(_Greedy._Solve_greedy(i));
 			float64 _Path_len = _Calculate_length(_Path);
@@ -58,7 +59,8 @@ private:
 		float64 _Min_len = FLOAT64_MAX;
 
 		size_t _Iters = Iterations + std::max((int64_t)Iterations - (int64_t)_Data.size(), 0i64);
-		
+		_Last_path_progress.reserve(_Iters);
+
 		for (size_t i = 0; i < _Iters; ++i) {
 			auto _Path = _Solve_path(_Generate_random_path());
 			float64 _Path_len = _Calculate_length(_Path);
@@ -81,13 +83,14 @@ private:
 		float64 _Temperature = Temp_init;
 		float64 _Cooling_rate = Alpha;
 		float64 _Min_temperature = Temp_min;
+		size_t _Mask = (1 << 13) - 1;
 		int _Ctr = 1;
 		while (_Temperature > _Min_temperature) {
 			size_t _First = rand() % _E_count;
 			size_t _Second = rand() % _E_count;
-			std::swap(_Path[_First], _Path[_Second]);
 
-			float64 _New_path_len = _Calculate_length(_Path);
+			float64 _New_path_len = _Update_and_calculate_new_path_length(_Path, _First, _Second, _Path_len);
+
 			float64 _Delta = _New_path_len - _Path_len;
 			if (_Delta < 0) {
 				_Path_len = _New_path_len;
@@ -103,17 +106,31 @@ private:
 			}
 			_Temperature *= 1 - _Cooling_rate;
 #ifdef DEBUG1	
-			if (++_Ctr % 8000 == 0) {
+			if ((++_Ctr & _Mask) == 0) {
 				_Last_path_progress.emplace_back(_Path);
+				//cout << "Temperature: " << _Temperature << endl;
 			}
 #endif
 		}
 		return _Path;
 	}
 
-	// Upgraded solution
-	
-	
+	float64 _Update_and_calculate_new_path_length(vector<size_t>& _Path, size_t _First, size_t _Second, float64 _Prev_length) {
+		size_t _E_count = _Data.size();
+		float64 _Delta = 0;
+		_Delta -= _Data[_Path[_First]][_Path[(_First + 1) % _E_count]];
+		_Delta -= _Data[_Path[_First]][_Path[(_First + _E_count - 1) % _E_count]];
+		_Delta -= _Data[_Path[_Second]][_Path[(_Second + 1) % _E_count]];
+		_Delta -= _Data[_Path[_Second]][_Path[(_Second + _E_count - 1) % _E_count]];
+		std::swap(_Path[_First], _Path[_Second]);
+		_Delta += _Data[_Path[_First]][_Path[(_First + 1) % _E_count]];
+		_Delta += _Data[_Path[_First]][_Path[(_First + _E_count - 1) % _E_count]];
+		_Delta += _Data[_Path[_Second]][_Path[(_Second + 1) % _E_count]];
+		_Delta += _Data[_Path[_Second]][_Path[(_Second + _E_count - 1) % _E_count]];
+		
+		return _Prev_length + _Delta;
+	}
+
 
 	inline float64 _Rnd(std::uniform_real_distribution<>& _Dist, std::default_random_engine& _Engine) const {
 		return _Dist(_Engine);

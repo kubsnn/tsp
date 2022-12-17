@@ -15,21 +15,26 @@ public:
 		if (_Precision_lvl == 1) set_parameters_for_fast_solution();
 		else if (_Precision_lvl == 2) set_parameters_for_medium_solution();
 		else if (_Precision_lvl == 3) set_parameters_for_precise_solution();
+		else if (_Precision_lvl == 4) set_parameters_for_precise_solution_many_cities();
 		else throw std::runtime_error("Invalid precision level");
 	}
 
 	inline void set_parameters_for_fast_solution() const {
-		set_settings(6e3, 2.3, 1);
+		set_settings(6e3, 7, 1);
 	}
 
 	inline void set_parameters_for_medium_solution() const {
-		set_settings(1.6e4, 2.2, 1.3);
+		set_settings(1.6e4, 8, 1.3);
 	}
 
 	inline void set_parameters_for_precise_solution() const {
-		set_settings(6e4, 2., 2);
+		set_settings(6e4, 10, 2);
 	}
 	
+	inline void set_parameters_for_precise_solution_many_cities() const {
+		set_settings(5e4, 23, 1.7);
+	}
+
 private:
 	inline void set_settings(size_t _Iters_per_edge, float64 Init_temp_coef, float64 _Out_iters_coef) const {
 		const float64 _Avg_distance = calculate_average_distance(_Data);
