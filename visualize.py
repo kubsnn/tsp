@@ -20,6 +20,8 @@ def visualizeResults(inputPath, outputPath):
         elif line.startswith("Path length"):
             solutionLength = float(line.split(":")[1].strip())
             results[algName]["solutionLength"] = solutionLength
+        elif line.startswith("Elapsed"):
+            results[algName]["elapsedTime"] = float(line.split(":")[1].strip())
         else:
             if line.strip() != "" and line.strip() != "[" and line.strip() != "]":
                 results[algName]["path"] += list(
@@ -64,6 +66,9 @@ def visualizeResults(inputPath, outputPath):
         # add path length
         ax.text(0.05, 0.95, "Path length: " +
                 str(results[key]["solutionLength"]), transform=ax.transAxes, fontsize=10, verticalalignment='top')
+        # add elapsed time
+        ax.text(0.05, 0.90, "Elapsed time: " +
+                str(results[key]["elapsedTime"]), transform=ax.transAxes, fontsize=10, verticalalignment='top')
         plotNum += 1
 
     plt.show()
