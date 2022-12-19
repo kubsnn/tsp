@@ -96,12 +96,12 @@ def RunGUI(settingsPath, ThemeName, windowSize=(850, 330), precisionOptions=[1, 
 
         # When button Save is pressed, save settings to file
         elif event == "Save":
-            print2GUI("Saving settings...")
+            print2GUI("Saving settings...\n")
             saveToFile("settings.in", values["-inputFile-"],
                        values["-outputFile-"], vAmount, vMax, values["-precision-"])
             inputPath = values["-inputFile-"]
             outputPath = values["-outputFile-"]
-            print2GUI("Saved")
+            print2GUI("Saved\n")
 
         # When button Cancel is pressed, reset input and output paths to the ones from file
         elif event == "Cancel":
@@ -109,27 +109,27 @@ def RunGUI(settingsPath, ThemeName, windowSize=(850, 330), precisionOptions=[1, 
             window["-outputFile-"].update(outputPath)
 
         elif event == "Only Visualize":
-            print2GUI("Visualizing results...")
+            print2GUI("Visualizing results...\n")
             visualize.visualizeResults(
                 values["-inputFile-"], values["-outputFile-"])
 
         elif event == "Save & Run":
-            print2GUI("Saving settings...")
+            print2GUI("Saving settings...\n")
             saveToFile("settings.in", values["-inputFile-"],
                        values["-outputFile-"], vAmount, vMax)
             inputPath = values["-inputFile-"]
             outputPath = values["-outputFile-"]
             precision = values["-precision-"]
-            print2GUI("Saved")
+            print2GUI("Saved\n")
             RunSimulation(inputPath, outputPath, precision)
 
-            print2GUI("Visualizing results...")
+            print2GUI("Visualizing results...\n")
             visualize.visualizeResults(inputPath, outputPath)
 
         elif event == "Run":
             RunSimulation(values["-inputFile-"],
                           values["-outputFile-"], values["-precision-"])
-            print2GUI("Visualizing results...")
+            print2GUI("Visualizing results...\n")
             visualize.visualizeResults(
                 values["-inputFile-"], values["-outputFile-"])
 

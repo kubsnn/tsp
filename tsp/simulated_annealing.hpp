@@ -24,10 +24,10 @@ public:
 		auto _Best_random = _Get_best_random_solution();
 
 		if (_Calculate_length(_Best_greedy.back()) < _Calculate_length(_Best_random.back())) {
-			write_progress(_Data, _Best_greedy, "results.txt");
+			//write_progress(_Data, _Best_greedy, "results.txt");
 			return _Best_greedy.back();
 		} else {
-			write_progress(_Data, _Best_random, "results.txt");
+			//write_progress(_Data, _Best_random, "results.txt");
 			return _Best_random.back();
 		}
 	}
