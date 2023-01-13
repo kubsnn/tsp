@@ -34,3 +34,9 @@ Usage: `py visualize.py`
 
 File with settings for Python scripts
 
+
+## Report
+
+Report for this project
+![Link to report in MD](sprawozdanie.md)
+![Link to report in PDF](sprawozdanie.pdf)
