@@ -38,5 +38,5 @@ File with settings for Python scripts
 ## Report
 
 Report for this project
-![Link to report in MD](sprawozdanie.md)
-![Link to report in PDF](sprawozdanie.pdf)
+![Link to report in MD](report/sprawozdanie.md)
+![Link to report in PDF](report/sprawozdanie.pdf)
