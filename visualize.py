@@ -1,6 +1,7 @@
 # show data from given files as a graph
 import networkx as nx
 import matplotlib.pyplot as plt
+import datetime
 
 
 def visualizeResults(inputPath, outputPath):
@@ -17,9 +18,13 @@ def visualizeResults(inputPath, outputPath):
             algName = line.split(":")[1].strip()
             results[algName] = {}
             results[algName]["path"] = []
+            results[algName]["elapsedTime"] = 0
         elif line.startswith("Path length"):
             solutionLength = float(line.split(":")[1].strip())
             results[algName]["solutionLength"] = solutionLength
+        elif line.startswith("Elapsed"):
+            solutionTime = float(line.split(":")[1].strip().split(" ")[0])
+            results[algName]["elapsedTime"] = solutionTime
         else:
             if line.strip() != "" and line.strip() != "[" and line.strip() != "]":
                 results[algName]["path"] += list(
@@ -28,7 +33,7 @@ def visualizeResults(inputPath, outputPath):
                 # remove last element from path
                 results[algName]["path"] = results[algName]["path"][:-1]
 
-    # print(results)
+    print(results)
 
     # inputFile to vertices list
     vertices = []
@@ -55,7 +60,11 @@ def visualizeResults(inputPath, outputPath):
         for i in range(len(results[key]["path"])-1):
             G.add_edge(int(results[key]["path"][i]),
                        int(results[key]["path"][i+1]))
-        G.add_edge(int(results[key]["path"][0]), int(results[key]["path"][-1]))
+        # if path len is > 1
+        if len(results[key]["path"]) > 1:
+            if results[key]["path"][0] != results[key]["path"][-1]:
+                G.add_edge(int(results[key]["path"][0]),
+                           int(results[key]["path"][-1]))
         ax = plt.gca()
         ax.set_title(key, {'fontsize': 14, 'fontweight': 'bold'})
         # draw subgraph
@@ -64,6 +73,10 @@ def visualizeResults(inputPath, outputPath):
         # add path length
         ax.text(0.05, 0.95, "Path length: " +
                 str(results[key]["solutionLength"]), transform=ax.transAxes, fontsize=10, verticalalignment='top')
+        # add elapsed time
+        if results[key]["elapsedTime"] != 0:
+            ax.text(0.05, 0.90, "Elapsed time: " +
+                    str(datetime.datetime.fromtimestamp(results[key]["elapsedTime"]/1000.0)), transform=ax.transAxes, fontsize=10, verticalalignment='top')
         plotNum += 1
 
     plt.show()
