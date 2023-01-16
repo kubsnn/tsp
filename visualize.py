@@ -60,7 +60,11 @@ def visualizeResults(inputPath, outputPath):
         for i in range(len(results[key]["path"])-1):
             G.add_edge(int(results[key]["path"][i]),
                        int(results[key]["path"][i+1]))
-        G.add_edge(int(results[key]["path"][0]), int(results[key]["path"][-1]))
+        # if path len is > 1
+        if len(results[key]["path"]) > 1:
+            if results[key]["path"][0] != results[key]["path"][-1]:
+                G.add_edge(int(results[key]["path"][0]),
+                           int(results[key]["path"][-1]))
         ax = plt.gca()
         ax.set_title(key, {'fontsize': 14, 'fontweight': 'bold'})
         # draw subgraph
