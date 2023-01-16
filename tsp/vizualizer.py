@@ -1,11 +1,11 @@
 import matplotlib.pyplot as plt
 from matplotlib.animation import FuncAnimation
 
-with open("test.txt", "r") as f:
+with open("tsp1000.txt", "r") as f:
     n = int(f.readline())
     c = [[int(j) for j in i.strip().split(" ")] for i in f.readlines()]
 
-with open("results.txt", "r") as f:
+with open("out.txt", "r") as f:
     e = [[int(j) for j in i.strip().split(" ")] for i in f.readlines()]
     ee = []
     for i in range(len(e)//n):

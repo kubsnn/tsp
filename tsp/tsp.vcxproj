@@ -134,6 +134,7 @@
   </ItemGroup>
   <ItemGroup>
     <ClInclude Include="colors.h" />
+    <ClInclude Include="progress_bar.hpp" />
     <ClInclude Include="settings.hpp" />
     <ClInclude Include="brute.hpp" />
     <ClInclude Include="greedy.hpp" />

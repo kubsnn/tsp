@@ -16,15 +16,18 @@ public:
 		else if (_Precision_lvl == 2) set_parameters_for_medium_solution();
 		else if (_Precision_lvl == 3) set_parameters_for_precise_solution();
 		else if (_Precision_lvl == 4) set_parameters_for_precise_solution_many_cities();
+		else if (_Precision_lvl == 5) set_settings(10.2e4, 21, 0.08); // tsp 1000
+		else if (_Precision_lvl == 6) set_settings(121e4, 11, 0.04);
+		else if (_Precision_lvl == 7) set_settings(30e4, 3, 0.04);
 		else throw std::runtime_error("Invalid precision level");
 	}
 
 	inline void set_parameters_for_fast_solution() const {
-		set_settings(6e3, 7, 1);
+		set_settings(6e3, 12, 1);
 	}
 
 	inline void set_parameters_for_medium_solution() const {
-		set_settings(1.6e4, 8, 1.3);
+		set_settings(1.6e4, 4, 1.3);
 	}
 
 	inline void set_parameters_for_precise_solution() const {
@@ -32,7 +35,7 @@ public:
 	}
 	
 	inline void set_parameters_for_precise_solution_many_cities() const {
-		set_settings(5e4, 23, 1.7);
+		set_settings(5e4, 23, 1.6);
 	}
 
 private:

@@ -1,5 +1,5 @@
-tsp\berlin52.txt
-127
-5000
-results\res1.txt
+tsp\tsp1000.txt
+1000
+10000
+tsp\out.txt
 2
