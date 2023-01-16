@@ -1,7 +1,7 @@
 import sys
 import random
 
-#if len(sys.argv) < 4 get that data by input
+# if len(sys.argv) < 4 get that data by input
 if len(sys.argv) < 4:
     filename = input("Enter filename: ")
     n = int(input("Enter the number of cities: "))
@@ -11,11 +11,13 @@ else:
     n = int(sys.argv[2])
     m = int(sys.argv[3])
 
-result = set();
+result = set()
 while len(result) < n:
     result.add((random.randint(0, m), random.randint(0, m)))
 
 with open(filename, 'w') as f:
+    i = 1
     f.write(str(n) + "\n")
     for x, y in result:
-        f.write(str(x) + " " + str(y) + "\n")
+        f.write(str(i) + " " + str(x) + " " + str(y) + "\n")
+        i += 1

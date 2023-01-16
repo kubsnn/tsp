@@ -1,11 +1,11 @@
 import matplotlib.pyplot as plt
 from matplotlib.animation import FuncAnimation
 
-with open("tsp1000.txt", "r") as f:
+with open("berlin52mod.txt", "r") as f:
     n = int(f.readline())
     c = [[int(j) for j in i.strip().split(" ")] for i in f.readlines()]
 
-with open("out.txt", "r") as f:
+with open("results.txt", "r") as f:
     e = [[int(j) for j in i.strip().split(" ")] for i in f.readlines()]
     ee = []
     for i in range(len(e)//n):
@@ -26,5 +26,5 @@ def animate(i):
                 c[ee[i][j][0]][1], c[ee[i][j][1]][1]], 'ko')
 
 
-ani = FuncAnimation(fig, animate, frames=len(ee), interval=15, repeat=False)
+ani = FuncAnimation(fig, animate, frames=len(ee), interval=100, repeat=False)
 plt.show()

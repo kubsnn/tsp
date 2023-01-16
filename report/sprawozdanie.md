@@ -60,8 +60,7 @@ Nasza implementacja w języku C++ dostępna na [Githubie](https://github.com/kub
 
 ![Start Instance](Greedy.jpg)
 
-![Half Done](BerlinHalf.jpg)
-
+![Half Done](Progress.jpg)
 
 
 ### 5. Finalizacja
