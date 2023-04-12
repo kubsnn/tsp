@@ -1,4 +1,4 @@
-# tsp-greedy
+# tsp
 
 some traveling salesman has a problem....
 
